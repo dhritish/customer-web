@@ -1,0 +1,132 @@
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, white, #C5D1E1);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.card {
+    width: 400px;
+    max-width: 90%;
+  align-items: center;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  color: black;
+  text-align: center;
+  z-index: 1;
+}
+
+.card h2 {
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  color: black;
+}
+
+input::placeholder {
+  color: gray;
+}
+
+input:focus {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: #5a67d8;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #f1f1f1;
+}
+
+.footer {
+  margin-top: 15px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.footer span {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.withIcon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    justify-content: center;
+}
+
+.icon {
+    margin-top: 6px;
+}
+
+
+
+[class^="circle-"] {
+    border-radius: 50%;
+    border: 1px solid white;
+    box-shadow: inset -20px -20px 25px white;
+    position: absolute;
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    background: linear-gradient(135deg, white,white,lightgray,gray);
+}
+
+.circle-1 {
+  width: 400px;
+  height: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-80%, -80%);
+}
+
+.circle-2 {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(20%, -20%);
+}
+
+.circle-3 {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-80%, 40%);
+}
