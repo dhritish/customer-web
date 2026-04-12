@@ -1,15 +1,32 @@
 import { useState } from "react";
 import "./auth.css";
-import type { UserType } from "./Types";
-import { Mail, User, Eye, EyeOff } from "lucide-react";
+import { Mail, Eye, EyeOff } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/authContext/authContext";
+import type { UserType } from "../contexts/authContext/Types";
+import { checkValidity_signIn as checkValidity } from "./utils";
 
 export default function SignIn() {
-  const [user, setUser] = useState<UserType>({
-    userName: "",
-    email: "",
-    password: "",
-  });
+  const { user, setUser, error, setError, signIn, setAccessToken } = useAuth();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  async function handleSignIn(user: UserType) {
+    try {
+      if (checkValidity(user) === false) {
+        return setError("Invalid user information");
+      }
+      const res = await signIn(user);
+      if (res.success === false) {
+        return setError(res.error);
+      }
+      setAccessToken(res.accessToken);
+      setError(null);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(msg);
+    }
+  }
+
   return (
     <div className="container">
       <div className="circle-1"></div>
@@ -18,17 +35,6 @@ export default function SignIn() {
       <div className="card">
         <h2>Welcome Back 👋</h2>
         <p className="subtitle">Sign in to continue</p>
-        <div className="withIcon">
-          <User className="icon" />
-          <input
-            type="text"
-            placeholder="Username"
-            value={user?.userName}
-            onChange={(text) =>
-              setUser({ ...user, userName: text.target.value })
-            }
-          />
-        </div>
 
         <div className="withIcon">
           <Mail className="icon" />
@@ -65,11 +71,18 @@ export default function SignIn() {
           />
         </div>
 
-        <button>Sign In</button>
+        <button
+          onClick={() => {
+            handleSignIn(user);
+          }}
+        >
+          Sign In
+        </button>
 
         <p className="footer">
-          Don't have an account? <span>Sign up</span>
+          Don't have an account? <Link to="/signUp">Sign up</Link>
         </p>
+        {error && <p className="error">{error}</p>}
       </div>
     </div>
   );

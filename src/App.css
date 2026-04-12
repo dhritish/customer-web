@@ -2,3 +2,19 @@
   margin: 0px;
   padding: 0px;
 }
+
+nav {
+  display: flex;
+  gap: 16px;
+  padding: 16px 24px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+nav a.active-link {
+  color: #0a84ff;
+  font-weight: 600;
+}

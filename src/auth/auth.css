@@ -130,3 +130,8 @@ button:hover {
   left: 50%;
   transform: translate(-80%, 40%);
 }
+
+.error {
+  font-size: 10px;
+  color: red;
+}

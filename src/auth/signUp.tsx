@@ -1,15 +1,33 @@
 import { useState } from "react";
 import "./auth.css";
-import type { UserType } from "./Types";
 import { Mail, User, Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext/authContext";
+import type { UserType } from "../contexts/authContext/Types";
+import { checkValidity_signUp as checkValidity } from "./utils";
 
 export default function SignUp() {
-  const [user, setUser] = useState<UserType>({
-    userName: "",
-    email: "",
-    password: "",
-  });
+  const { user, setUser, error, setError, signUp } = useAuth();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  async function handleSignUp(user: UserType) {
+    try {
+      if (checkValidity(user) === false) {
+        return setError("Invalid user information");
+      }
+      const res = await signUp(user);
+      if (res.success === false) {
+        return setError(res.error);
+      }
+      setError(null);
+      navigate("/otp");
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(msg);
+    }
+  }
+
   return (
     <div className="container">
       <div className="circle-1"></div>
@@ -23,9 +41,9 @@ export default function SignUp() {
           <input
             type="text"
             placeholder="Username"
-            value={user?.userName}
+            value={user?.username}
             onChange={(text) =>
-              setUser({ ...user, userName: text.target.value })
+              setUser({ ...user, username: text.target.value })
             }
           />
         </div>
@@ -65,11 +83,18 @@ export default function SignUp() {
           />
         </div>
 
-        <button>Sign Up</button>
+        <button
+          onClick={() => {
+            handleSignUp(user);
+          }}
+        >
+          Sign Up
+        </button>
 
         <p className="footer">
-          Already have an account? <span>Sign in</span>
+          Already have an account? <Link to="/signIn">Sign in</Link>
         </p>
+        {error && <p className="error">{error}</p>}
       </div>
     </div>
   );
