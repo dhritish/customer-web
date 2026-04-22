@@ -1,18 +1,15 @@
-import { useState } from "react";
 import { useAuth } from "../contexts/authContext/authContext";
-import type { UserType } from "../contexts/authContext/Types";
 import "./auth.css";
 
 export default function OTP() {
-  const [otp, setOTP] = useState<string>("");
-  const { user, error, setError, submitOTP } = useAuth();
+  const { user, setUser, error, setError, submitOTP } = useAuth();
 
-  const handleOTP = async (user: UserType, otp: string) => {
+  const handleOTP = async () => {
     try {
-      if (otp.length !== 6) {
+      if (user.otp?.length !== 6) {
         return setError("Invalid OTP");
       }
-      const res = await submitOTP(user, otp);
+      const res = await submitOTP();
       if (res.success === false) {
         return setError(res.error);
       }
@@ -33,13 +30,13 @@ export default function OTP() {
         <div className="withIcon">
           <input
             type="text"
-            value={otp}
-            onChange={(text) => setOTP(text.target.value)}
+            value={user.otp}
+            onChange={(text) => setUser({ ...user, otp: text.target.value })}
           />
         </div>
         <button
           onClick={() => {
-            handleOTP(user, otp);
+            handleOTP();
           }}
         >
           Submit

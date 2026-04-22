@@ -23,14 +23,20 @@ describe("OTP", () => {
   let authValue: AuthContextType;
   let submitOTP: ReturnType<typeof vi.fn<AuthContextType["submitOTP"]>>;
   let setError: ReturnType<typeof vi.fn<AuthContextType["setError"]>>;
+  let setUser: ReturnType<typeof vi.fn<AuthContextType["setUser"]>>;
 
   beforeEach(() => {
+    vi.clearAllMocks();
     submitOTP = vi.fn<AuthContextType["submitOTP"]>();
     setError = vi.fn<AuthContextType["setError"]>();
+    setUser = vi.fn<AuthContextType["setUser"]>((value) => {
+      authValue.user =
+        typeof value === "function" ? value(authValue.user) : value;
+    });
 
     authValue = {
       user: { ...baseUser },
-      setUser: vi.fn(),
+      setUser,
       signIn: vi.fn(),
       signUp: vi.fn(),
       submitOTP,
@@ -49,12 +55,13 @@ describe("OTP", () => {
 
   it("shows an error when the OTP is not six digits", async () => {
     const user = userEvent.setup();
+    authValue.setUser({ ...authValue.user, otp: "12345" });
 
     render(<OTP />);
 
-    await user.type(screen.getByRole("textbox"), "12345");
     await user.click(screen.getByRole("button", { name: /submit/i }));
 
+    expect(setUser).toHaveBeenCalledWith({ ...baseUser, otp: "12345" });
     expect(setError).toHaveBeenCalledWith("Invalid OTP");
     expect(submitOTP).not.toHaveBeenCalled();
   });
@@ -65,38 +72,41 @@ describe("OTP", () => {
       success: false,
       error: "OTP expired",
     });
+    authValue.setUser({ ...authValue.user, otp: "123456" });
 
     render(<OTP />);
 
-    await user.type(screen.getByRole("textbox"), "123456");
     await user.click(screen.getByRole("button", { name: /submit/i }));
 
-    expect(submitOTP).toHaveBeenCalledWith(authValue.user, "123456");
+    expect(setUser).toHaveBeenCalledWith({ ...baseUser, otp: "123456" });
+    expect(submitOTP).toHaveBeenCalled();
     expect(setError).toHaveBeenCalledWith("OTP expired");
   });
 
   it("clears the error when OTP submission succeeds", async () => {
     const user = userEvent.setup();
     submitOTP.mockResolvedValue({ success: true });
+    authValue.setUser({ ...authValue.user, otp: "123456" });
 
     render(<OTP />);
 
-    await user.type(screen.getByRole("textbox"), "123456");
     await user.click(screen.getByRole("button", { name: /submit/i }));
 
-    expect(submitOTP).toHaveBeenCalledWith(authValue.user, "123456");
+    expect(setUser).toHaveBeenCalledWith({ ...baseUser, otp: "123456" });
+    expect(submitOTP).toHaveBeenCalled();
     expect(setError).toHaveBeenCalledWith(null);
   });
 
   it("shows a thrown error message from OTP submission", async () => {
     const user = userEvent.setup();
     submitOTP.mockRejectedValue(new Error("Network down"));
+    authValue.setUser({ ...authValue.user, otp: "123456" });
 
     render(<OTP />);
 
-    await user.type(screen.getByRole("textbox"), "123456");
     await user.click(screen.getByRole("button", { name: /submit/i }));
 
+    expect(setUser).toHaveBeenCalledWith({ ...baseUser, otp: "123456" });
     expect(setError).toHaveBeenCalledWith("Network down");
   });
 });

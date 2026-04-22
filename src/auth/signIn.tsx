@@ -3,19 +3,18 @@ import "./auth.css";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/authContext";
-import type { UserType } from "../contexts/authContext/Types";
 import { checkValidity_signIn as checkValidity } from "./utils";
 
 export default function SignIn() {
   const { user, setUser, error, setError, signIn, setAccessToken } = useAuth();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  async function handleSignIn(user: UserType) {
+  async function handleSignIn() {
     try {
       if (checkValidity(user) === false) {
         return setError("Invalid user information");
       }
-      const res = await signIn(user);
+      const res = await signIn();
       if (res.success === false) {
         return setError(res.error);
       }
@@ -73,7 +72,7 @@ export default function SignIn() {
 
         <button
           onClick={() => {
-            handleSignIn(user);
+            handleSignIn();
           }}
         >
           Sign In

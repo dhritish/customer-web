@@ -3,7 +3,6 @@ import "./auth.css";
 import { Mail, User, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/authContext";
-import type { UserType } from "../contexts/authContext/Types";
 import { checkValidity_signUp as checkValidity } from "./utils";
 
 export default function SignUp() {
@@ -11,12 +10,12 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  async function handleSignUp(user: UserType) {
+  async function handleSignUp() {
     try {
       if (checkValidity(user) === false) {
         return setError("Invalid user information");
       }
-      const res = await signUp(user);
+      const res = await signUp();
       if (res.success === false) {
         return setError(res.error);
       }
@@ -85,7 +84,7 @@ export default function SignUp() {
 
         <button
           onClick={() => {
-            handleSignUp(user);
+            handleSignUp();
           }}
         >
           Sign Up

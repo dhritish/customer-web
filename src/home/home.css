@@ -1,0 +1,40 @@
+.outerContainer {
+    padding: 10px;
+}
+
+.productContainer {
+    padding: 15px 20px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 10px;
+
+}
+
+.trendingContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    color: rgb(92, 91, 91);
+}
+
+.image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.imageContainer {
+    border: 1px solid gray;
+    border-radius: 10px;
+    height: 400px;
+    overflow: hidden;
+}
+
+.productInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}

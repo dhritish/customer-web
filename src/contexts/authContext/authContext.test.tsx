@@ -2,7 +2,6 @@ import { describe, vi, expect, beforeEach } from "vitest";
 import { useGetAccessToken } from "./hooks";
 import AuthProvider, { useAuth } from "./authContext";
 import userEvent from "@testing-library/user-event";
-import type { UserType } from "./Types";
 import { render, screen } from "@testing-library/react";
 
 vi.mock("./hooks", () => {
@@ -14,36 +13,27 @@ vi.mock("./hooks", () => {
 globalThis.fetch = vi.fn();
 const mockedUseGetAccessToken = vi.mocked(useGetAccessToken);
 
-const baseUser: UserType = {
-  username: "leo",
-  email: "leo@example.com",
-  password: "123456",
-  role: "customer",
-  otp: "123456",
-};
-
 function TestComponent() {
   const { signIn, signUp, submitOTP, refresh, signOut } = useAuth();
-  const otp: string = "123456";
   return (
     <>
       <button
         onClick={() => {
-          signIn(baseUser);
+          signIn();
         }}
       >
         signin
       </button>
       <button
         onClick={() => {
-          signUp(baseUser);
+          signUp();
         }}
       >
         signup
       </button>
       <button
         onClick={() => {
-          submitOTP(baseUser, otp);
+          submitOTP();
         }}
       >
         submitOTP
@@ -93,7 +83,6 @@ describe("authContext", () => {
       "baseUrl/auth/signIn",
       expect.objectContaining({
         method: "POST",
-        body: JSON.stringify(baseUser),
         headers: expect.objectContaining({
           "Content-Type": "application/json",
           "Client-Type": "web",
@@ -123,7 +112,6 @@ describe("authContext", () => {
       "baseUrl/auth/signUp",
       expect.objectContaining({
         method: "POST",
-        body: JSON.stringify(baseUser),
         headers: expect.objectContaining({
           "Content-Type": "application/json",
         }),
@@ -151,7 +139,6 @@ describe("authContext", () => {
       "baseUrl/auth/submitOTP",
       expect.objectContaining({
         method: "POST",
-        body: JSON.stringify(baseUser),
         headers: expect.objectContaining({
           "Content-Type": "application/json",
         }),

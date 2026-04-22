@@ -15,9 +15,9 @@ export type AuthContextType = {
     error: string | null;
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     setError: Dispatch<SetStateAction<string | null>>;   
-    signIn: (user: UserType) => Promise<any>;
-    signUp: (user: UserType) => Promise<any>;
-    submitOTP: (user: UserType, otp: string) => Promise<any>;
+    signIn: () => Promise<any>;
+    signUp: () => Promise<any>;
+    submitOTP: () => Promise<any>;
     refresh: () => Promise<any>;
     signOut: () => Promise<any>;
     isLoading: boolean;

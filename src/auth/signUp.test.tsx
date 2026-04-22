@@ -91,7 +91,7 @@ describe("signUp", () => {
     );
     await user.click(screen.getByRole("button", { name: /sign up/i }));
     expect(mockedCheckValidity).toHaveBeenCalledWith(authValue.user);
-    expect(mockedsignUp).toHaveBeenCalledWith(authValue.user);
+    expect(mockedsignUp).toHaveBeenCalledWith();
     expect(navigate).toHaveBeenCalledWith("/otp");
     expect(mockedsetError).toHaveBeenCalledWith(null);
   });
@@ -107,7 +107,7 @@ describe("signUp", () => {
     );
     await user.click(screen.getByRole("button", { name: /sign up/i }));
     expect(mockedCheckValidity).toHaveBeenCalledWith(authValue.user);
-    expect(mockedsignUp).toHaveBeenCalledWith(authValue.user);
+    expect(mockedsignUp).toHaveBeenCalledWith();
     expect(mockedsetError).toHaveBeenCalledWith("Network down");
   });
 
@@ -125,7 +125,7 @@ describe("signUp", () => {
     );
     await user.click(screen.getByRole("button", { name: /sign up/i }));
     expect(mockedCheckValidity).toHaveBeenCalledWith(authValue.user);
-    expect(mockedsignUp).toHaveBeenCalledWith(authValue.user);
+    expect(mockedsignUp).toHaveBeenCalledWith();
     expect(mockedsetError).toHaveBeenCalledWith("Invalid credentials");
   });
 });

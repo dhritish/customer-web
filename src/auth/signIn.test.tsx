@@ -81,7 +81,7 @@ describe("singIn", () => {
     await user.type(screen.getByPlaceholderText("Password"), "secret");
     await user.click(screen.getByRole("button", { name: /sign in/i }));
     expect(mockedCheckValidity).toHaveBeenCalledWith(authValue.user);
-    expect(mockedsignIn).toHaveBeenCalledWith(authValue.user);
+    expect(mockedsignIn).toHaveBeenCalledWith();
     expect(mockedsetAccessToken).toHaveBeenCalledWith("token");
     expect(mockedsetError).toHaveBeenCalledWith(null);
   });
@@ -99,7 +99,7 @@ describe("singIn", () => {
     await user.type(screen.getByPlaceholderText("Password"), "secret");
     await user.click(screen.getByRole("button", { name: /sign in/i }));
     expect(mockedCheckValidity).toHaveBeenCalledWith(authValue.user);
-    expect(mockedsignIn).toHaveBeenCalledWith(authValue.user);
+    expect(mockedsignIn).toHaveBeenCalledWith();
     expect(mockedsetError).toHaveBeenCalledWith("Network down");
   });
 
@@ -119,7 +119,7 @@ describe("singIn", () => {
     await user.type(screen.getByPlaceholderText("Password"), "secret");
     await user.click(screen.getByRole("button", { name: /sign in/i }));
     expect(mockedCheckValidity).toHaveBeenCalledWith(authValue.user);
-    expect(mockedsignIn).toHaveBeenCalledWith(authValue.user);
+    expect(mockedsignIn).toHaveBeenCalledWith();
     expect(mockedsetError).toHaveBeenCalledWith("Invalid credentials");
   });
 });
