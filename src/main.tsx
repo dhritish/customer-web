@@ -5,15 +5,16 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./contexts/authContext/authContext.tsx";
 import { AutoRetryProvider } from "./contexts/retryLogic/autoRetry.tsx";
+import CartPorvider from "./contexts/cartContext/cartContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <AutoRetryProvider>
+  <BrowserRouter>
+    <AuthProvider>
+      <AutoRetryProvider>
+        <CartPorvider>
           <App />
-        </AutoRetryProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>,
+        </CartPorvider>
+      </AutoRetryProvider>
+    </AuthProvider>
+  </BrowserRouter>,
 );

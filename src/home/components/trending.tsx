@@ -2,19 +2,35 @@ import { useCallback, useEffect, useState } from "react";
 import "../home.css";
 import { getTrending } from "../apiCalls/suggestionAPI";
 import { useRetry } from "../../contexts/retryLogic/autoRetry";
+import { useCart } from "../../contexts/cartContext/cartContext";
 
 export function Trending() {
   const [trendingProducts, setTrendingProducts] = useState<any[]>([]);
   const { autoRetry } = useRetry();
+  const { addToCart } = useCart();
 
   const getTrendingProducts = useCallback(async () => {
     try {
       const res = await autoRetry({}, getTrending);
       setTrendingProducts(res.trendingProducts ?? []);
+      console.log(res.trendingProducts);
     } catch (error) {
       setTrendingProducts([]);
     }
   }, [autoRetry]);
+
+  const handleAddToCart = useCallback(
+    async (product: any) => {
+      product.quantity = 1;
+      console.log(product);
+      try {
+        await addToCart(product);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [addToCart],
+  );
 
   useEffect(() => {
     getTrendingProducts();
@@ -28,6 +44,7 @@ export function Trending() {
           <ItemCard
             key={`${product.name}-${product.price}`}
             product={product}
+            handleAddToCart={handleAddToCart}
           />
         ))}
       </div>
@@ -36,7 +53,13 @@ export function Trending() {
   );
 }
 
-function ItemCard({ product }: { product: any }) {
+function ItemCard({
+  product,
+  handleAddToCart,
+}: {
+  product: any;
+  handleAddToCart: any;
+}) {
   return (
     <div className="productContainer">
       <div className="imageContainer">
@@ -56,6 +79,18 @@ function ItemCard({ product }: { product: any }) {
         </span>
         <span>{product.total} bought in the last 100 days</span>
       </div>
+      <button
+        style={{
+          color: "black",
+          backgroundColor: "lightgreen",
+          fontSize: "20px",
+        }}
+        onClick={() => {
+          handleAddToCart(product);
+        }}
+      >
+        Add to cart
+      </button>
     </div>
   );
 }
