@@ -22,10 +22,13 @@ export type AuthContextType = {
     signOut: () => Promise<any>;
     isLoading: boolean;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
+    isAccessLoaded: boolean;
+    setIsAccessLoaded: Dispatch<SetStateAction<boolean>>;
 }
 
 export type useGetAccessTokenParams = {
     refresh: () => Promise<any>;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     setAccessToken: Dispatch<SetStateAction<string | null>>;
+    setIsAccessLoaded: Dispatch<SetStateAction<boolean>>;
 }

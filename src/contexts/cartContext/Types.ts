@@ -21,6 +21,7 @@ export type CartContextType = {
 
 export type useGetCartParams = {
     setCartItems: Dispatch<SetStateAction<ProductType[]>>;
-    accessToken: string | null;
     setCartTotal: Dispatch<SetStateAction<number>>;
+    autoRetry: (params: any, callback: (params: any)=> Promise<any>) => Promise<any>;
+    isAccessLoaded: boolean;
 }

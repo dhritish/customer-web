@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import type { useGetAccessTokenParams } from "./Types"
 
 export const useGetAccessToken = (params: useGetAccessTokenParams) => {
-    const { refresh, setAccessToken, setIsLoading } = params;
+    const { refresh, setAccessToken, setIsLoading, setIsAccessLoaded } = params;
     useEffect(() => {
         (async () => {
             try {
@@ -14,6 +14,7 @@ export const useGetAccessToken = (params: useGetAccessTokenParams) => {
                 }
                 setAccessToken(res.accessToken);
                 setIsLoading(false);
+                setIsAccessLoaded(true);
             } catch (error) {
                 setIsLoading(false);
                 console.log(error);

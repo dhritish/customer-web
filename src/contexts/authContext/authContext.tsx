@@ -21,6 +21,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     otp: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [isAccessLoaded, setIsAccessLoaded] = useState<boolean>(false);
 
   const signIn = useCallback(async () => {
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/signIn`, {
@@ -89,7 +90,12 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     return data;
   }, []);
 
-  useGetAccessToken({ refresh, setAccessToken, setIsLoading });
+  useGetAccessToken({
+    refresh,
+    setAccessToken,
+    setIsLoading,
+    setIsAccessLoaded,
+  });
 
   const value: AuthContextType = {
     user,
@@ -105,6 +111,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     signOut,
     isLoading,
     setIsLoading,
+    isAccessLoaded,
+    setIsAccessLoaded,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

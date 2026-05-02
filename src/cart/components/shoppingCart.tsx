@@ -3,13 +3,16 @@ import { useCart } from "../../contexts/cartContext/cartContext";
 import "../cart.css";
 import type { CartItemPropsType } from "../Types";
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import type { ProductType } from "../../contexts/cartContext/Types";
 
 export function ShoppingCart() {
   const { cartItems, cartTotal, addToCart, removeFromCart, decreaseFromCart } =
     useCart();
+  const navigate = useNavigate();
 
   const handleRemoveFromCart = useCallback(
-    async (product: any) => {
+    async (product: ProductType) => {
       try {
         await removeFromCart(product);
       } catch (error) {
@@ -20,7 +23,7 @@ export function ShoppingCart() {
   );
 
   const handleAddToCart = useCallback(
-    async (product: any) => {
+    async (product: ProductType) => {
       try {
         await addToCart(product);
       } catch (error) {
@@ -31,7 +34,7 @@ export function ShoppingCart() {
   );
 
   const handleDecreaseFromCart = useCallback(
-    async (product: any) => {
+    async (product: ProductType) => {
       try {
         await decreaseFromCart(product);
       } catch (error) {
@@ -41,18 +44,60 @@ export function ShoppingCart() {
     [decreaseFromCart],
   );
 
+  const isCartEmpty = cartItems.length === 0;
+  const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
   return (
     <div className="cartWindow">
-      {cartItems.map((cartItem) => (
-        <CartItemCard
-          key={cartItem._id}
-          cartItem={cartItem}
-          handleRemoveFromCart={handleRemoveFromCart}
-          handleAddToCart={handleAddToCart}
-          handleDecreaseFromCart={handleDecreaseFromCart}
-        />
-      ))}
-      <span className="total">Total: ₹{cartTotal}</span>
+      <div className="cartWindowHeader">
+        <div>
+          <h2>Items</h2>
+          <span>
+            {itemCount} {itemCount === 1 ? "item" : "items"}
+          </span>
+        </div>
+      </div>
+
+      {isCartEmpty ? (
+        <div className="emptyCart">
+          <h3>Your cart is empty</h3>
+          <p>Add products to your cart and they will show up here.</p>
+          <button
+            className="continueShoppingButton"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
+            Continue shopping
+          </button>
+        </div>
+      ) : (
+        <div className="cartItemsList">
+          {cartItems.map((cartItem) => (
+            <CartItemCard
+              key={cartItem._id}
+              cartItem={cartItem}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleAddToCart={handleAddToCart}
+              handleDecreaseFromCart={handleDecreaseFromCart}
+            />
+          ))}
+        </div>
+      )}
+
+      <div className="cartSummary">
+        <span>Subtotal</span>
+        <strong>₹{cartTotal}</strong>
+      </div>
+      <button
+        className="checkoutButton"
+        disabled={isCartEmpty}
+        onClick={() => {
+          navigate("/checkout");
+        }}
+      >
+        Checkout
+      </button>
     </div>
   );
 }
@@ -67,7 +112,7 @@ function CartItemCard({
     <div className="cartContainer">
       <div className="cartImageContainer">
         <img
-          className="image"
+          className="cartItemImage"
           src={
             cartItem.url ??
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7H5SO_PbMIDuCocFhyTIbet6O18XKTpOrqY0QURzlCBm939T2hMG0eMc&s"
@@ -76,35 +121,43 @@ function CartItemCard({
         />
       </div>
       <div className="cartItemInfo">
-        <span>{cartItem.name}</span>
-        <span style={{ color: "green", fontWeight: "bold", fontSize: "40px" }}>
-          ₹{cartItem.price}
-        </span>
-        <span>{cartItem.stock} in stock</span>
-        <div className="incDec">
-          <Trash2
-            className="incDecIcon"
-            style={{ border: "none" }}
+        <span className="cartItemName">{cartItem.name}</span>
+        <span className="cartItemPrice">₹{cartItem.price}</span>
+        <span className="cartItemStock">{cartItem.stock} in stock</span>
+        <div className="cartActions">
+          <button
+            className="removeCartButton incDecIcon"
+            type="button"
+            aria-label={`Remove ${cartItem.name} from cart`}
             onClick={() => {
               handleRemoveFromCart(cartItem);
             }}
-          />
-          <Minus
-            className="incDecIcon"
-            onClick={() => {
-              handleDecreaseFromCart(cartItem);
-            }}
-          />
-          <span style={{ fontSize: "20px", alignContent: "center" }}>
-            {cartItem.quantity}
-          </span>
-          <Plus
-            className="incDecIcon"
-            style={{ borderRight: "none" }}
-            onClick={() => {
-              handleAddToCart(cartItem);
-            }}
-          />
+          >
+            <Trash2 size={18} />
+          </button>
+          <div className="incDec">
+            <button
+              className="incDecIcon"
+              type="button"
+              aria-label={`Decrease ${cartItem.name} quantity`}
+              onClick={() => {
+                handleDecreaseFromCart(cartItem);
+              }}
+            >
+              <Minus size={18} />
+            </button>
+            <span>{cartItem.quantity}</span>
+            <button
+              className="incDecIcon"
+              type="button"
+              aria-label={`Increase ${cartItem.name} quantity`}
+              onClick={() => {
+                handleAddToCart(cartItem);
+              }}
+            >
+              <Plus size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ export default function CartPorvider({ children }: { children: ReactNode }) {
   const [cartTotal, setCartTotal] = useState<number>(0);
 
   const { autoRetry } = useRetry();
-  const { accessToken } = useAuth();
+  const { isAccessLoaded } = useAuth();
 
   const addToCart = useCallback(
     async (product: ProductType) => {
@@ -91,7 +91,7 @@ export default function CartPorvider({ children }: { children: ReactNode }) {
     [setCartItems, setCartTotal, autoRetry],
   );
 
-  useGetCart({ setCartItems, setCartTotal, accessToken });
+  useGetCart({ setCartItems, setCartTotal, autoRetry, isAccessLoaded });
 
   const value: CartContextType = {
     addToCart,

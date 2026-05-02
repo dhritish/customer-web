@@ -6,3 +6,9 @@ export type CartItemPropsType = {
     handleDecreaseFromCart: (product: ProductType) => Promise<any>;
     handleAddToCart: (product: ProductType) => Promise<any>;
 }
+
+export type PaymentType = "payOnDelivery" | "prePayment";
+
+export type PaymentPropsType = {
+  location: [number, number] | null;
+};
