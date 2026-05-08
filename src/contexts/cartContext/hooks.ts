@@ -16,7 +16,6 @@ export function useGetCart(params: useGetCartParams){
         setCartItems(res.cart);
         console.log(res.cart);
         const total = res.cart.reduce((acc: number, item: ProductType) =>{return acc+(item.price*item.quantity);},0);
-        console.log(`total: ${total}`);
         setCartTotal(total);
     })();
     },[isAccessLoaded, autoRetry, setCartItems, setCartTotal]);

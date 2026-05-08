@@ -18,3 +18,42 @@ nav a.active-link {
   color: #0a84ff;
   font-weight: 600;
 }
+
+.profile {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-content span {
+  text-decoration: none;
+  color: #333;
+  padding: 8px 16px;
+}
+
+.dropdown-content span:hover {
+  background-color: #f2f2f2;
+}
+
+.logout:hover {
+  cursor: pointer;
+}
+
+.profile span:hover {
+  cursor: pointer;
+}

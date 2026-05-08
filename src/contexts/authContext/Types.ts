@@ -8,6 +8,12 @@ export type UserType = {
     otp?: string;
 }
 
+export type ProfileType = {
+    username: string;
+    email: string;
+    role?: "owner" | "employee" | "customer";
+}
+
 export type AuthContextType = {
     user: UserType;
     setUser: Dispatch<SetStateAction<UserType>>;
@@ -24,6 +30,8 @@ export type AuthContextType = {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     isAccessLoaded: boolean;
     setIsAccessLoaded: Dispatch<SetStateAction<boolean>>;
+    profile: ProfileType | null;
+    setProfile: Dispatch<SetStateAction<ProfileType | null>>;
 }
 
 export type useGetAccessTokenParams = {
@@ -31,4 +39,11 @@ export type useGetAccessTokenParams = {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     setIsAccessLoaded: Dispatch<SetStateAction<boolean>>;
+}
+
+export type useGetProfileParams = {
+    accessToken: string | null;
+    setProfile: Dispatch<SetStateAction<ProfileType | null>>;
+    profile: ProfileType | null;
+    isAccessLoaded: boolean;
 }

@@ -5,13 +5,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { AuthContextType, UserType } from "./Types";
-import { useGetAccessToken } from "./hooks";
+import type { AuthContextType, ProfileType, UserType } from "./Types";
+import { useGetAccessToken, useGetProfile } from "./hooks";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [profile, setProfile] = useState<ProfileType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<UserType>({
     username: "",
@@ -97,6 +98,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     setIsAccessLoaded,
   });
 
+  useGetProfile({
+    accessToken,
+    setProfile,
+    profile,
+    isAccessLoaded,
+  });
+
   const value: AuthContextType = {
     user,
     setUser,
@@ -113,6 +121,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading,
     isAccessLoaded,
     setIsAccessLoaded,
+    profile,
+    setProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

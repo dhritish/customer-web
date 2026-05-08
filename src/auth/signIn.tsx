@@ -6,7 +6,8 @@ import { useAuth } from "../contexts/authContext/authContext";
 import { checkValidity_signIn as checkValidity } from "./utils";
 
 export default function SignIn() {
-  const { user, setUser, error, setError, signIn, setAccessToken } = useAuth();
+  const { user, setUser, error, setError, signIn, setAccessToken, setProfile } =
+    useAuth();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   async function handleSignIn() {
@@ -19,6 +20,21 @@ export default function SignIn() {
         return setError(res.error);
       }
       setAccessToken(res.accessToken);
+      const resProfile = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/auth/profile`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${res.accessToken}`,
+            "Client-Type": "web",
+          },
+          credentials: "include",
+        },
+      );
+      const profile = await resProfile.json();
+      if (profile.success) {
+        setProfile(profile.profile);
+      }
       setError(null);
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unknown error";

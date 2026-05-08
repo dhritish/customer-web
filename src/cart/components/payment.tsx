@@ -16,7 +16,7 @@ export function Payment({ location }: PaymentPropsType) {
   const [message, setMessage] = useState<string | null>(null);
   const { autoRetry } = useRetry();
   const { isAccessLoaded } = useAuth();
-  const { error, isLoading, Razorpay } = useRazorpay();
+  const { error, Razorpay } = useRazorpay();
 
   const handleCheckout = useCallback(async () => {
     if (!location) {
@@ -107,15 +107,11 @@ export function Payment({ location }: PaymentPropsType) {
 
         <button
           className="checkoutSubmitButton"
-          disabled={!isAccessLoaded || !location || isLoading || isCheckingOut}
+          disabled={!isAccessLoaded || !location || isCheckingOut}
           onClick={handleCheckout}
           type="button"
         >
-          {isLoading
-            ? "Loading payment..."
-            : isCheckingOut
-              ? "Checking out..."
-              : "Checkout"}
+          {isCheckingOut ? "Checking out..." : "Checkout"}
         </button>
 
         {error && <p className="checkoutMessage">Razorpay error: {error}</p>}
